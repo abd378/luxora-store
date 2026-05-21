@@ -1706,6 +1706,22 @@ try {
 } catch (pushError) {
   console.log("Push notification error:", pushError);
 }
+try {
+  await supabase.functions.invoke("send-telegram-order", {
+    body: {
+      customer: user.full_name || currentUser.email,
+      total,
+      phone,
+      location,
+      paymentMethod,
+      transactionId: paymentReference,
+    },
+  });
+
+  console.log("Telegram order notification sent");
+} catch (telegramError) {
+  console.log("Telegram notification error:", telegramError);
+}
     toast.success("Order confirmed successfully!");
     navigate("/profile");
   }
