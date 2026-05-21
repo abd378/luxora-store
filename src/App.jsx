@@ -1706,21 +1706,23 @@ try {
 } catch (pushError) {
   console.log("Push notification error:", pushError);
 }
+console.log("BEFORE TELEGRAM SEND");
+
 try {
-  await supabase.functions.invoke("send-telegram-order", {
+  const telegramResult = await supabase.functions.invoke("send-telegram-order", {
     body: {
       customer: user.full_name || currentUser.email,
-      total,
-      phone,
-      location,
-      paymentMethod,
+      total: total,
+      phone: phone,
+      location: location,
+      paymentMethod: paymentMethod,
       transactionId: paymentReference || "N/A",
     },
   });
 
-  console.log("Telegram order notification sent");
+  console.log("TELEGRAM RESULT:", telegramResult);
 } catch (telegramError) {
-  console.log("Telegram notification error:", telegramError);
+  console.log("TELEGRAM ERROR:", telegramError);
 }
     toast.success("Order confirmed successfully!");
     navigate("/profile");
