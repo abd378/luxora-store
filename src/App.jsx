@@ -1714,7 +1714,7 @@ try {
       phone,
       location,
       paymentMethod,
-      transactionId: paymentReference,
+      transactionId: paymentReference || "N/A",
     },
   });
 
