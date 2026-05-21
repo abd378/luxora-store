@@ -766,43 +766,28 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
           <select name="paymentMethod" required>
             <option>Cash on Delivery</option>
             <option>Whish Money</option>
-            <option>OMT</option>
-            <option>Bank Transfer</option>
           </select>
-
           <div className="payment-instructions">
-            <h3>Payment Instructions</h3>
+  <h3>Payment Instructions</h3>
 
-            <p>
-              <strong>Whish Money:</strong> 81 345 379 - abd osman
-            </p>
+  <p>
+    <strong>Whish Money:</strong> 81 345 379 - abd osman
+  </p>
 
-            <p>
-              <strong>OMT:</strong> abd othman - 81 345 379
-            </p>
+  <p>
+    <strong>Cash on Delivery:</strong> Pay when your order arrives.
+  </p>
 
-            <p>
-              <strong>Bank Transfer:</strong> Bank Name / IBAN / Account Name
-            </p>
-
-            <p className="payment-warning">
-              After sending payment, enter the transaction ID below.
-            </p>
-          </div>
-
+  <p className="payment-warning">
+    If you pay using Whish Money, enter the transaction number below.
+  </p>
+</div>
           <label>Transaction ID (Optional)</label>
-          <input
-            name="paymentReference"
-            type="text"
-            placeholder="Whish / OMT transaction number"
-          />
-
-          <label>Payment Note</label>
-          <textarea
-            name="paymentNote"
-            placeholder="Any payment notes..."
-          ></textarea>
-
+<input
+  type="text"
+  name="paymentReference"
+  placeholder="Enter Whish transaction number (optional)"
+/>
           <button>Confirm Order</button>
         </motion.form>
 
