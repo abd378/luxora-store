@@ -1705,3 +1705,24 @@ button {
     box-shadow: 0 0 0 rgba(255, 0, 0, 0.7);
   }
 }
+.payment-instructions {
+  margin-bottom: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.payment-instructions h3 {
+  color: #d4af37;
+  margin-bottom: 10px;
+}
+
+.payment-instructions p {
+  margin: 8px 0;
+}
+
+.payment-warning {
+  color: #d4af37;
+  font-weight: bold;
+}
