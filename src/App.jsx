@@ -1684,7 +1684,16 @@ function App() {
     if (user.role === "admin") {
       await loadAdminData();
     }
-
+try {
+  await supabase.functions.invoke("send-push-notification", {
+    body: {
+      title: "New Luxora Order 🛒",
+      message: `New order from ${user.full_name || currentUser.email} - Total: $${total}`,
+    },
+  });
+} catch (pushError) {
+  console.log("Push notification error:", pushError);
+}
     toast.success("Order confirmed successfully!");
     navigate("/profile");
   }
