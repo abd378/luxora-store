@@ -688,10 +688,18 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
     e.preventDefault();
 
     const phone = e.target.phone.value;
-    const location = e.target.location.value;
-    const paymentMethod = e.target.paymentMethod.value;
+const location = e.target.location.value;
+const paymentMethod = e.target.paymentMethod.value;
+const paymentReference = e.target.paymentReference.value;
+const paymentNote = e.target.paymentNote.value;
 
-    await confirmOrder({ phone, location, paymentMethod });
+await confirmOrder({
+  phone,
+  location,
+  paymentMethod,
+  paymentReference,
+  paymentNote,
+});
   }
 
   if (!user || !sessionUser) {
@@ -754,12 +762,25 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
           ></textarea>
 
           <label>Payment Method</label>
-          <select name="paymentMethod" required>
-            <option>Cash on Delivery</option>
-            <option>Credit Card</option>
-            <option>Whish Money</option>
-            <option>OMT</option>
-          </select>
+         <select name="paymentMethod" required>
+  <option>Cash on Delivery</option>
+  <option>Whish Money</option>
+  <option>OMT</option>
+  <option>Bank Transfer</option>
+</select>
+
+<label>Transaction ID (Optional)</label>
+<input
+  name="paymentReference"
+  type="text"
+  placeholder="Whish / OMT transaction number"
+/>
+
+<label>Payment Note</label>
+<textarea
+  name="paymentNote"
+  placeholder="Any payment notes..."
+></textarea>
 
           <button>Confirm Order</button>
         </motion.form>
@@ -1559,7 +1580,13 @@ function App() {
     navigate("/payment");
   }
 
-  async function confirmOrder({ phone, location, paymentMethod }) {
+  async function confirmOrder({
+  phone,
+  location,
+  paymentMethod,
+  paymentReference,
+  paymentNote,
+}) {
     const { data } = await supabase.auth.getSession();
     const currentUser = data.session?.user;
 
@@ -1580,7 +1607,7 @@ function App() {
       0
     );
 
-   const { data: orderData, error } = await supabase
+  const { data: orderData, error } = await supabase
   .from("orders")
   .insert({
     user_id: currentUser.id,
@@ -1592,11 +1619,12 @@ function App() {
     phone,
     location,
     payment_method: paymentMethod,
-    payment_status:
-      paymentMethod === "Cash on Delivery" ? "Pending" : "Paid Demo",
+    payment_reference: paymentReference,
+    payment_note: paymentNote,
+    payment_status: "Pending",
   })
   .select()
-  .single();
+  .single();;
 
     if (error) {
       toast.error("Order error: " + error.message);
