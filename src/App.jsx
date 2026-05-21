@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { initOneSignal } from "./OneSignalInit";
 import { useTranslation } from "react-i18next";
 import { supabase } from "./supabaseClient";
 
@@ -1235,6 +1236,9 @@ function ProtectedAdmin({
 function App() {
   const [sessionUser, setSessionUser] = useState(null);
   const [user, setUser] = useState(null);
+  useEffect(() => {
+  initOneSignal();
+}, []);
 
   const [products, setProducts] = useState(() =>
     JSON.parse(localStorage.getItem("luxoraProducts") || "[]")
