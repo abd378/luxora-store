@@ -1580,25 +1580,47 @@ function App() {
       0
     );
 
-    const { error } = await supabase.from("orders").insert({
-      user_id: currentUser.id,
-      customer_name: user.full_name || currentUser.email,
-      customer_email: user.email || currentUser.email,
-      total,
-      status: "Processing",
-      items: cart,
-      phone,
-      location,
-      payment_method: paymentMethod,
-      payment_status:
-        paymentMethod === "Cash on Delivery" ? "Pending" : "Paid Demo",
-    });
+   const { data: orderData, error } = await supabase
+  .from("orders")
+  .insert({
+    user_id: currentUser.id,
+    customer_name: user.full_name || currentUser.email,
+    customer_email: user.email || currentUser.email,
+    total,
+    status: "Processing",
+    items: cart,
+    phone,
+    location,
+    payment_method: paymentMethod,
+    payment_status:
+      paymentMethod === "Cash on Delivery" ? "Pending" : "Paid Demo",
+  })
+  .select()
+  .single();
 
     if (error) {
       toast.error("Order error: " + error.message);
       console.log(error);
       return;
     }
+    try {
+  await supabase.functions.invoke("send-order-email", {
+    body: {
+      customerEmail: user.email || currentUser.email,
+      customerName: user.full_name || currentUser.email,
+      orderId: orderData.id,
+      total,
+      phone,
+      location,
+      paymentMethod,
+      items: cart,
+    },
+  });
+
+  toast.success("Confirmation email sent!");
+} catch (emailError) {
+  console.log("Email error:", emailError);
+}
 
     setCart([]);
     localStorage.removeItem("luxoraCart");
