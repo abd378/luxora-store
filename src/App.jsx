@@ -688,18 +688,18 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
     e.preventDefault();
 
     const phone = e.target.phone.value;
-const location = e.target.location.value;
-const paymentMethod = e.target.paymentMethod.value;
-const paymentReference = e.target.paymentReference.value;
-const paymentNote = e.target.paymentNote.value;
+    const location = e.target.location.value;
+    const paymentMethod = e.target.paymentMethod.value;
+    const paymentReference = e.target.paymentReference.value;
+    const paymentNote = e.target.paymentNote.value;
 
-await confirmOrder({
-  phone,
-  location,
-  paymentMethod,
-  paymentReference,
-  paymentNote,
-});
+    await confirmOrder({
+      phone,
+      location,
+      paymentMethod,
+      paymentReference,
+      paymentNote,
+    });
   }
 
   if (!user || !sessionUser) {
@@ -762,25 +762,45 @@ await confirmOrder({
           ></textarea>
 
           <label>Payment Method</label>
-         <select name="paymentMethod" required>
-  <option>Cash on Delivery</option>
-  <option>Whish Money</option>
-  <option>OMT</option>
-  <option>Bank Transfer</option>
-</select>
+          <select name="paymentMethod" required>
+            <option>Cash on Delivery</option>
+            <option>Whish Money</option>
+            <option>OMT</option>
+            <option>Bank Transfer</option>
+          </select>
 
-<label>Transaction ID (Optional)</label>
-<input
-  name="paymentReference"
-  type="text"
-  placeholder="Whish / OMT transaction number"
-/>
+          <div className="payment-instructions">
+            <h3>Payment Instructions</h3>
 
-<label>Payment Note</label>
-<textarea
-  name="paymentNote"
-  placeholder="Any payment notes..."
-></textarea>
+            <p>
+              <strong>Whish Money:</strong> 81 345 379 - abd osman
+            </p>
+
+            <p>
+              <strong>OMT:</strong> abd othman - 81 345 379
+            </p>
+
+            <p>
+              <strong>Bank Transfer:</strong> Bank Name / IBAN / Account Name
+            </p>
+
+            <p className="payment-warning">
+              After sending payment, enter the transaction ID below.
+            </p>
+          </div>
+
+          <label>Transaction ID (Optional)</label>
+          <input
+            name="paymentReference"
+            type="text"
+            placeholder="Whish / OMT transaction number"
+          />
+
+          <label>Payment Note</label>
+          <textarea
+            name="paymentNote"
+            placeholder="Any payment notes..."
+          ></textarea>
 
           <button>Confirm Order</button>
         </motion.form>
@@ -1581,12 +1601,12 @@ function App() {
   }
 
   async function confirmOrder({
-  phone,
-  location,
-  paymentMethod,
-  paymentReference,
-  paymentNote,
-}) {
+    phone,
+    location,
+    paymentMethod,
+    paymentReference,
+    paymentNote,
+  }) {
     const { data } = await supabase.auth.getSession();
     const currentUser = data.session?.user;
 
@@ -1607,48 +1627,50 @@ function App() {
       0
     );
 
-  const { data: orderData, error } = await supabase
-  .from("orders")
-  .insert({
-    user_id: currentUser.id,
-    customer_name: user.full_name || currentUser.email,
-    customer_email: user.email || currentUser.email,
-    total,
-    status: "Processing",
-    items: cart,
-    phone,
-    location,
-    payment_method: paymentMethod,
-    payment_reference: paymentReference,
-    payment_note: paymentNote,
-    payment_status: "Pending",
-  })
-  .select()
-  .single();;
+    const { data: orderData, error } = await supabase
+      .from("orders")
+      .insert({
+        user_id: currentUser.id,
+        customer_name: user.full_name || currentUser.email,
+        customer_email: user.email || currentUser.email,
+        total,
+        status: "Processing",
+        items: cart,
+        phone,
+        location,
+        payment_method: paymentMethod,
+        payment_reference: paymentReference,
+        payment_note: paymentNote,
+        payment_status: "Pending",
+      })
+      .select()
+      .single();
 
     if (error) {
       toast.error("Order error: " + error.message);
       console.log(error);
       return;
     }
-    try {
-  await supabase.functions.invoke("send-order-email", {
-    body: {
-      customerEmail: user.email || currentUser.email,
-      customerName: user.full_name || currentUser.email,
-      orderId: orderData.id,
-      total,
-      phone,
-      location,
-      paymentMethod,
-      items: cart,
-    },
-  });
 
-  toast.success("Confirmation email sent!");
-} catch (emailError) {
-  console.log("Email error:", emailError);
-}
+    try {
+      await supabase.functions.invoke("send-order-email", {
+        body: {
+          customerEmail: user.email || currentUser.email,
+          customerName: user.full_name || currentUser.email,
+          orderId: orderData.id,
+          total,
+          phone,
+          location,
+          paymentMethod,
+          items: cart,
+        },
+      });
+
+      toast.success("Confirmation email sent!");
+    } catch (emailError) {
+      console.log("Email error:", emailError);
+      toast.error("Order saved, but email was not sent.");
+    }
 
     setCart([]);
     localStorage.removeItem("luxoraCart");
