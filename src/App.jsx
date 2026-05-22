@@ -1760,34 +1760,27 @@ try {
 
   if (!order) return;
 
-  let nextStatus = "Pending";
+  let nextStatus = "Processing";
 
-  switch (order.tracking_status) {
-    case "Pending":
-      nextStatus = "Processing";
-      break;
+  if (order.tracking_status === "Processing") {
+    nextStatus = "Out for Delivery";
+  }
 
-    case "Processing":
-      nextStatus = "Out for Delivery";
-      break;
-
-    case "Out for Delivery":
-      nextStatus = "Delivered";
-      break;
-
-    default:
-      nextStatus = "Delivered";
+  if (order.tracking_status === "Out for Delivery") {
+    nextStatus = "Delivered";
   }
 
   const { error } = await supabase
     .from("orders")
     .update({
       tracking_status: nextStatus,
+      status: nextStatus === "Delivered" ? "Completed" : "Processing",
     })
     .eq("id", orderId);
 
   if (error) {
     toast.error(error.message);
+    console.log(error);
     return;
   }
 
