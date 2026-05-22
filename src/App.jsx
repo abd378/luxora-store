@@ -876,7 +876,7 @@ function Login({ refreshSession }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo:"https://luxor-store.com"
+        redirectTo:"https://luxor-store.com",
         queryParams: {
           access_type: "offline",
           prompt: "select_account",
