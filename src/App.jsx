@@ -671,7 +671,7 @@ function Cart({
 
           <div className="checkout-box">
             <h2>Total: ${total}</h2>
-            <button onClick={checkout}>Proceed To Payment</button>
+            <button type="button" onClick={checkout}>Proceed Order</button>
           </div>
         </>
       )}
@@ -691,8 +691,8 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
     const phone = e.target.phone.value;
     const location = e.target.location.value;
     const paymentMethod = e.target.paymentMethod.value;
-    const paymentReference = e.target.paymentReference.value;
-    const paymentNote = e.target.paymentNote.value;
+    const paymentReference = e.target.paymentReference?.value || "";
+    const paymentNote = e.target.paymentNote?.value || "";
 
     await confirmOrder({
       phone,
@@ -788,7 +788,14 @@ function Payment({ cart, user, sessionUser, confirmOrder }) {
   name="paymentReference"
   placeholder="Enter Whish transaction number (optional)"
 />
-          <button>Confirm Order</button>
+
+          <label>Order Note (Optional)</label>
+          <textarea
+            name="paymentNote"
+            placeholder="Any extra delivery note? Example: call me before delivery"
+          ></textarea>
+
+          <button type="submit">Confirm Order</button>
         </motion.form>
 
         <motion.div
