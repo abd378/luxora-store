@@ -2055,7 +2055,10 @@ try {
   rel="noreferrer"
   className="whatsapp-float"
 >
-  💬
+  <span className="whatsapp-icon">💬</span>
+  <span className="whatsapp-text">
+    Need Help? Chat with us
+  </span>
 </a>
       <Navbar
         user={user}
