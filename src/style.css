@@ -1794,129 +1794,126 @@ button {
   color: #d4af37;
   letter-spacing: 1px;
 }
-/* ===== LUXORA PREMIUM V2 UPGRADE ===== */
+
+/* ===== LUXORA CLEAN BLUE DESIGN ===== */
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(255, 215, 0, 0.08), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(255, 140, 0, 0.08), transparent 28%),
-    #0a0a0a;
+  background: #f7fbff;
+  color: #102033;
 }
 
 .site {
   background:
-    radial-gradient(circle at top left, rgba(212, 175, 55, 0.18), transparent 32%),
-    radial-gradient(circle at center right, rgba(255, 255, 255, 0.06), transparent 25%),
-    linear-gradient(135deg, #050505, #111, #050505);
+    radial-gradient(circle at top left, rgba(147, 197, 253, 0.35), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(191, 219, 254, 0.45), transparent 30%),
+    #f7fbff;
 }
 
 .navbar {
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(30, 64, 175, 0.12);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
 }
 
-.hero-content h1 {
-  font-size: 85px;
-  line-height: 1;
-  margin-bottom: 25px;
-  background: linear-gradient(135deg, #ffffff, #f5d76e, #d4af37);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.logo span,
+.nav-links a,
+.page-header h1,
+.section h2,
+.auth-card h1,
+.payment-card h2,
+.payment-summary h2 {
+  color: #0f2a4a !important;
+  -webkit-text-fill-color: initial !important;
+  background: none !important;
 }
 
-.hero-content p {
-  font-size: 20px;
-  color: #f1f1f1;
+.nav-links a:hover,
+.category,
+.profile-stats strong,
+.payment-total strong,
+.feedback-card h3 {
+  color: #38bdf8 !important;
 }
 
-.badge {
-  background: rgba(212, 175, 55, 0.14);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
-}
-
-.hero-card {
-  animation: floatHero 5s ease-in-out infinite;
-  box-shadow: 0 45px 120px rgba(212, 175, 55, 0.2);
-}
-
-@keyframes floatHero {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-18px); }
-  100% { transform: translateY(0); }
-}
-
-.hero-buttons a,
 .small-btn,
+.hero-buttons a,
 .product-card button,
 .checkout-box button,
 .details-page button,
 .auth-card button,
 .payment-card button {
-  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.28);
+  background: linear-gradient(135deg, #38bdf8, #1d4ed8) !important;
+  color: white !important;
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.28);
 }
 
-.hero-buttons a:hover,
-.small-btn:hover,
-.product-card button:hover,
-.checkout-box button:hover,
-.details-page button:hover,
-.auth-card button:hover,
-.payment-card button:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 18px 45px rgba(212, 175, 55, 0.42);
+.outline {
+  background: white !important;
+  color: #1d4ed8 !important;
+  border: 1px solid #93c5fd !important;
+}
+
+.hero-content h1 {
+  color: #0f2a4a !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.hero-content p,
+.page-header p,
+.product-card p,
+.payment-note,
+.feedback-card p,
+.admin-table p {
+  color: #475569 !important;
+}
+
+.badge {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #bae6fd !important;
+}
+
+.hero-card {
+  background:
+    linear-gradient(rgba(15, 42, 74, 0.05), rgba(15, 42, 74, 0.45)),
+    url("https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80") !important;
+  box-shadow: 0 35px 90px rgba(30, 64, 175, 0.18);
+}
+
+.hero-card h2,
+.hero-card strong {
+  color: white !important;
 }
 
 .product-card,
-.service-card,
 .category-card,
+.service-card,
 .pricing-card,
 .payment-card,
 .payment-summary,
 .feedback-card,
 .admin-grid div,
 .admin-table,
-.profile-card {
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.11),
-    rgba(255,255,255,0.045)
-  );
-  border: 1px solid rgba(212, 175, 55, 0.18);
-  box-shadow: 0 25px 70px rgba(0,0,0,0.28);
+.profile-card,
+.cart-item,
+.checkout-box {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  color: #102033 !important;
 }
 
-.product-card:hover,
-.service-card:hover,
-.pricing-card:hover {
-  transform: translateY(-14px) scale(1.025);
-  box-shadow: 0 28px 75px rgba(212, 175, 55, 0.25);
-  border-color: rgba(212, 175, 55, 0.45);
+.product-card h3,
+.cart-item h3,
+.payment-item h3,
+.profile-card h1 {
+  color: #0f2a4a !important;
 }
 
-.category-card:hover {
-  transform: translateY(-12px) scale(1.05);
-  box-shadow: 0 22px 55px rgba(212, 175, 55, 0.25);
-}
-
-.product-card img,
-.service-card img,
-.payment-item img {
-  transition: 0.35s;
-}
-
-.product-card:hover img,
-.service-card:hover img {
-  transform: scale(1.04);
-}
-
-.page-header h1,
-.section h2,
-.auth-card h1,
-.payment-card h2,
-.payment-summary h2 {
-  background: linear-gradient(135deg, #fff, #f5d76e, #d4af37);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.product-card strong,
+.card-bottom strong {
+  color: #1d4ed8 !important;
 }
 
 .search-box,
@@ -1924,41 +1921,79 @@ body {
 .payment-card textarea,
 .payment-card select,
 .auth-card input,
-.auth-card textarea {
-  border: 1px solid rgba(212, 175, 55, 0.25);
+.auth-card textarea,
+.shop-tools select {
+  background: #ffffff !important;
+  border: 1px solid #bfdbfe !important;
+  color: #0f172a !important;
 }
 
-.search-box:focus-within,
-.payment-card input:focus,
-.payment-card textarea:focus,
-.payment-card select:focus,
-.auth-card input:focus,
-.auth-card textarea:focus {
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+.search-box input {
+  color: #0f172a !important;
+}
+
+.search-box input::placeholder,
+.payment-card input::placeholder,
+.payment-card textarea::placeholder,
+.auth-card input::placeholder,
+.auth-card textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.icon-link {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+}
+
+.icon-link:hover {
+  background: #38bdf8 !important;
+  color: white !important;
+}
+
+.icon-link span {
+  background: #1d4ed8 !important;
+  color: white !important;
+}
+
+.payment-instructions,
+.tracking-box {
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+.payment-instructions h3,
+.payment-warning,
+.tracking-title {
+  color: #1d4ed8 !important;
+}
+
+.tracking-step {
+  background: #e2e8f0 !important;
+  color: #64748b !important;
 }
 
 .tracking-step.active {
-  background: linear-gradient(135deg, #d4af37, #f5d76e);
-  color: #111;
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
+  background: linear-gradient(135deg, #38bdf8, #1d4ed8) !important;
+  color: white !important;
 }
 
-.logo-image {
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+.status-select,
+.tracking-select {
+  background: white !important;
+  border: 1px solid #93c5fd !important;
+  color: #1d4ed8 !important;
 }
 
-@media (max-width: 1000px) {
-  .hero-content h1 {
-    font-size: 48px;
-  }
+.orders-head {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
 
-  .hero-content p {
-    font-size: 16px;
-  }
+.orders-row {
+  background: white !important;
+  color: #102033 !important;
+}
 
-  .navbar {
-    width: 95%;
-    padding: 16px;
-  }
+.empty {
+  color: #1d4ed8 !important;
 }
