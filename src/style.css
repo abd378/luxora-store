@@ -2158,3 +2158,52 @@ img {
     font-size: 22px;
   }
 }
+/* ===== LUXURY FOOTER ===== */
+
+.lux-footer {
+  margin-top: 120px;
+  padding: 70px 8%;
+  background: #0f172a;
+  color: white;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px;
+}
+
+.footer-grid h3 {
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+.footer-grid p,
+.footer-grid a {
+  display: block;
+  color: #cbd5e1;
+  margin-bottom: 12px;
+  line-height: 1.8;
+}
+
+.footer-grid a:hover {
+  color: #38bdf8;
+}
+
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  color: #94a3b8;
+}
+
+@media(max-width:900px){
+
+  .footer-grid{
+    grid-template-columns:1fr;
+    gap:35px;
+    text-align:center;
+  }
+
+}

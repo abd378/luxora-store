@@ -1515,6 +1515,69 @@ function Contact() {
   );
 }
 
+
+function LuxuryFooter() {
+  return (
+    <footer className="lux-footer">
+      <div className="footer-grid">
+        <div>
+          <div className="footer-brand">
+            <img src="/logo.png" alt="Luxora Logo" />
+            <h3>Luxora Store</h3>
+          </div>
+
+          <p>
+            A modern online shopping experience for premium products,
+            supermarket essentials and professional digital services.
+          </p>
+
+          <div className="footer-socials">
+            <a
+              href="https://wa.me/96181345379"
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp
+            </a>
+            <a href="https://luxor-store.com" target="_blank" rel="noreferrer">
+              Website
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Shop</h3>
+          <Link to="/shop">All Products</Link>
+          <Link to="/supermarket">Supermarket</Link>
+          <Link to="/wishlist">Wishlist</Link>
+          <Link to="/cart">Cart</Link>
+        </div>
+
+        <div>
+          <h3>Company</h3>
+          <Link to="/">Home</Link>
+          <Link to="/services">Services</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/profile">My Account</Link>
+        </div>
+
+        <div>
+          <h3>Contact</h3>
+          <p>📞 +961 81 345 379</p>
+          <p>📧 support@luxor-store.com</p>
+          <p>📍 Lebanon</p>
+          <p>🔒 Secure login with Google & Supabase</p>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <span>© 2026 Luxora Store. All Rights Reserved.</span>
+        <span>Built with React, Supabase and Vercel.</span>
+      </div>
+    </footer>
+  );
+}
+
 function ProtectedAdmin({
   user,
   adminOrders,
@@ -2205,6 +2268,8 @@ try {
 
         <Route path="/contact" element={<Contact />} />
       </Routes>
+
+      <LuxuryFooter />
     </div>
   );
 }
