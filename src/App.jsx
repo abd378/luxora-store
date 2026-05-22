@@ -41,7 +41,10 @@ function Navbar({
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <Link to="/" className="logo">LUXORA</Link>
+      <Link to="/" className="logo">
+  <img src="/logo.png" alt="Luxora Logo" className="logo-image" />
+  <span>LUXORA</span>
+</Link>
 
       <div className="nav-links">
         <Link to="/">{t("home")}</Link>

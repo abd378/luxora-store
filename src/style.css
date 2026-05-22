@@ -1774,3 +1774,23 @@ button {
   outline: none;
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
 }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-image {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.logo span {
+  font-size: 22px;
+  font-weight: 900;
+  color: #d4af37;
+  letter-spacing: 1px;
+}
