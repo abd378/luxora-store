@@ -102,60 +102,233 @@ function Navbar({
 }
 
 function Home() {
-  const { t } = useTranslation();
+  const categories = [
+    {
+      name: "Fruits",
+      image:
+        "https://images.unsplash.com/photo-1596363505729-4190a9506133?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Drinks",
+      image:
+        "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Snacks",
+      image:
+        "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Dairy",
+      image:
+        "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Bakery",
+      image:
+        "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80",
+    },
+  ];
+
+  const bestSellers = [
+    {
+      name: "Fresh Blueberries",
+      category: "Fruits",
+      price: "$4.99",
+      image:
+        "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Natural Mineral Water",
+      category: "Drinks",
+      price: "$1.20",
+      image:
+        "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Classic Potato Chips",
+      category: "Snacks",
+      price: "$2.50",
+      image:
+        "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?auto=format&fit=crop&w=500&q=80",
+    },
+    {
+      name: "Fresh Milk",
+      category: "Dairy",
+      price: "$2.80",
+      image:
+        "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=500&q=80",
+    },
+  ];
 
   return (
     <>
       <motion.section
-        className="hero"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="hero clean-hero"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
       >
         <div className="hero-content">
-          <p className="badge">{t("heroBadge")}</p>
+          <p className="badge">Premium Quality</p>
 
-          <h1>{t("heroTitle")}</h1>
+          <h1>
+            Fresh Products <br />
+            For a <span>Healthy</span> Life
+          </h1>
 
-          <p>{t("heroText")}</p>
+          <p>
+            Shop quality products, beauty items, supermarket essentials and
+            premium services with fast delivery to your door.
+          </p>
 
           <div className="hero-buttons">
-            <Link to="/shop">{t("shopNow")}</Link>
-            <Link to="/services" className="outline">
-              {t("ourServices")}
+            <Link to="/shop">Shop Now</Link>
+            <Link to="/supermarket" className="outline">
+              Explore Categories
             </Link>
+          </div>
+
+          <div className="hero-features">
+            <span>100% Fresh</span>
+            <span>Secure Payment</span>
+            <span>Fast Delivery</span>
           </div>
         </div>
 
         <motion.div
-          className="hero-card"
-          animate={{ y: [0, -15, 0] }}
+          className="hero-card blue-hero-card"
+          animate={{ y: [0, -12, 0] }}
           transition={{ repeat: Infinity, duration: 4 }}
         >
-          <span>Limited Edition</span>
-          <h2>Golden Aura</h2>
-          <p>Luxury perfume collection</p>
-          <strong>$89</strong>
+          <div>
+            <span>Best Quality</span>
+            <h2>Daily Essentials</h2>
+            <p>Modern shopping experience</p>
+            <strong>Fast</strong>
+          </div>
         </motion.div>
       </motion.section>
 
-      <section className="section">
-        <h2>{t("featuredCategories")}</h2>
+      <section className="home-stats">
+        <div>
+          <strong>12+</strong>
+          <span>Products</span>
+        </div>
+        <div>
+          <strong>5</strong>
+          <span>Categories</span>
+        </div>
+        <div>
+          <strong>24/7</strong>
+          <span>Online Orders</span>
+        </div>
+        <div>
+          <strong>Fast</strong>
+          <span>Delivery Ready</span>
+        </div>
+      </section>
 
-        <div className="category-grid">
-          {["Perfumes", "Watches", "Bags", "Skincare", "Accessories"].map(
-            (cat, index) => (
-              <motion.div
-                key={cat}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link to="/shop" className="category-card">
-                  {cat}
+      <section className="section home-section">
+        <div className="section-title-row">
+          <h2>Shop by Category</h2>
+          <Link to="/supermarket">View All →</Link>
+        </div>
+
+        <div className="category-grid category-image-grid">
+          {categories.map((cat, index) => (
+            <motion.div
+              key={cat.name}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.06 }}
+            >
+              <Link to="/supermarket" className="category-card image-category-card">
+                <img src={cat.image} alt={cat.name} />
+                <span>{cat.name}</span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section home-section">
+        <div className="section-title-row">
+          <h2>Best Sellers</h2>
+          <Link to="/shop">View All →</Link>
+        </div>
+
+        <div className="product-grid home-best-grid">
+          {bestSellers.map((item) => (
+            <motion.div className="product-card home-product-card" key={item.name}>
+              <button className="heart-btn">
+                <Heart size={18} />
+              </button>
+
+              <img src={item.image} alt={item.name} />
+              <h3>{item.name}</h3>
+              <p className="category">{item.category}</p>
+
+              <div className="card-bottom">
+                <strong>{item.price}</strong>
+                <Link to="/shop" className="mini-cart-btn">
+                  <ShoppingBag size={16} />
                 </Link>
-              </motion.div>
-            )
-          )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section offer-banner">
+        <div>
+          <span>Special Offer!</span>
+          <h2>Get 20% Off On Your First Order</h2>
+          <Link to="/shop">Shop Now</Link>
+        </div>
+      </section>
+
+      <section className="section why-grid">
+        <div>
+          <span>🚚</span>
+          <h3>Free Delivery</h3>
+          <p>Fast delivery on selected orders.</p>
+        </div>
+        <div>
+          <span>🔒</span>
+          <h3>Secure Payment</h3>
+          <p>Safe checkout with real backend.</p>
+        </div>
+        <div>
+          <span>↩️</span>
+          <h3>Money Back</h3>
+          <p>Customer focused shopping process.</p>
+        </div>
+        <div>
+          <span>🎧</span>
+          <h3>24/7 Support</h3>
+          <p>Dedicated support for customers.</p>
+        </div>
+      </section>
+
+      <section className="section testimonials-section">
+        <h2>What Our Customers Say</h2>
+
+        <div className="testimonial-grid">
+          <div>
+            <strong>★★★★★</strong>
+            <p>Luxora always delivers a clean and professional experience.</p>
+            <span>— Sarah J.</span>
+          </div>
+          <div>
+            <strong>★★★★★</strong>
+            <p>Great quality and fast delivery. I love shopping here.</p>
+            <span>— Michael T.</span>
+          </div>
+          <div>
+            <strong>★★★★★</strong>
+            <p>Best online shopping experience with a modern design.</p>
+            <span>— Emily R.</span>
+          </div>
         </div>
       </section>
     </>
