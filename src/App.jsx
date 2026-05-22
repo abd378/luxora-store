@@ -868,6 +868,45 @@ function Login({ refreshSession }) {
     navigate("/shop");
   }
 
+  async function handleGoogleLogin() {
+    if (loading) return;
+
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/shop`,
+        queryParams: {
+          access_type: "offline",
+          prompt: "select_account",
+        },
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  }
+
+  async function handleForgotPassword() {
+    const email = window.prompt("Enter your email address to reset password:");
+
+    if (!email) return;
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/login`,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Password reset email sent!");
+  }
+
   return (
     <section className="auth-page">
       <motion.form
@@ -879,6 +918,17 @@ function Login({ refreshSession }) {
         <h1>Welcome Back</h1>
 
         <p>Login with your real Supabase account.</p>
+
+        <button
+          type="button"
+          className="google-btn"
+          onClick={handleGoogleLogin}
+          disabled={loading}
+        >
+          Continue with Google
+        </button>
+
+        <div className="auth-divider">or login with email</div>
 
         <input name="email" type="email" placeholder="Email address" required />
 
@@ -893,6 +943,14 @@ function Login({ refreshSession }) {
           {loading ? "Logging in..." : "Login"}
         </button>
 
+        <button
+          type="button"
+          className="link-button"
+          onClick={handleForgotPassword}
+        >
+          Forgot Password?
+        </button>
+
         <p>
           Don't have account? <Link to="/signup">Create Account</Link>
         </p>
@@ -904,6 +962,28 @@ function Login({ refreshSession }) {
 function Signup({ refreshSession }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  async function handleGoogleSignup() {
+    if (loading) return;
+
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/shop`,
+        queryParams: {
+          access_type: "offline",
+          prompt: "select_account",
+        },
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  }
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -954,6 +1034,17 @@ function Signup({ refreshSession }) {
         <h1>Create Account</h1>
 
         <p>Create a real account saved in Supabase.</p>
+
+        <button
+          type="button"
+          className="google-btn"
+          onClick={handleGoogleSignup}
+          disabled={loading}
+        >
+          Continue with Google
+        </button>
+
+        <div className="auth-divider">or create account with email</div>
 
         <input name="fullname" type="text" placeholder="Full name" required />
 
@@ -1088,7 +1179,7 @@ function Profile({ user, orders, submitFeedback }) {
   );
 }
 
-function Admin({ adminOrders, feedbacks, updateOrderStatus, updateTrackingStatus }) {
+function Admin({ adminOrders, feedbacks, updateOrderStatus }) {
   const totalRevenue = adminOrders.reduce(
     (sum, order) => sum + Number(order.total),
     0
@@ -1176,18 +1267,6 @@ function Admin({ adminOrders, feedbacks, updateOrderStatus, updateTrackingStatus
               </span>
 
               <select
-                className="tracking-select"
-                value={order.tracking_status || "Pending"}
-                onChange={(e) => updateTrackingStatus(order.id, e.target.value)}
-              >
-                <option>Pending</option>
-                <option>Processing</option>
-                <option>Out for Delivery</option>
-                <option>Delivered</option>
-                <option>Cancelled</option>
-              </select>
-
-              <select
   value={order.tracking_status || "Pending"}
   onChange={(e) => updateOrderStatus(order.id, e.target.value)}
   className="status-select"
@@ -1240,7 +1319,6 @@ function ProtectedAdmin({
   adminOrders,
   feedbacks,
   updateOrderStatus,
-  updateTrackingStatus,
 }) {
   if (user?.role === "admin") {
     return (
@@ -1248,7 +1326,6 @@ function ProtectedAdmin({
         adminOrders={adminOrders}
         feedbacks={feedbacks}
         updateOrderStatus={updateOrderStatus}
-        updateTrackingStatus={updateTrackingStatus}
       />
     );
   }
@@ -1785,25 +1862,7 @@ try {
 
   toast.success(`Tracking updated to ${newStatus}`);
 }
-  async function updateTrackingStatus(orderId, trackingStatus) {
-    const { error } = await supabase
-      .from("orders")
-      .update({ tracking_status: trackingStatus })
-      .eq("id", orderId);
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-
-    await loadAdminData();
-
-    if (sessionUser) {
-      await loadOrders(sessionUser.id);
-    }
-
-    toast.success(`Tracking updated to ${trackingStatus}`);
-  }
 
   return (
     <div className="site">
@@ -1929,7 +1988,6 @@ try {
               adminOrders={adminOrders}
               feedbacks={feedbacks}
               updateOrderStatus={updateOrderStatus}
-              updateTrackingStatus={updateTrackingStatus}
             />
           }
         />
