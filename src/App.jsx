@@ -27,6 +27,7 @@ function Navbar({
   setNewOrdersCount,
 }) {
   const { t, i18n } = useTranslation();
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   function changeLanguage() {
     const nextLang = i18n.language === "en" ? "ar" : "en";
@@ -37,22 +38,49 @@ function Navbar({
 
   return (
     <motion.nav
-      className="navbar"
+      className="premium-navbar"
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <Link to="/" className="logo">
-  <img src="/logo.png" alt="Luxora Logo" className="logo-image" />
-  <span>LUXORA</span>
-</Link>
+      <Link to="/" className="premium-logo">
+        <img src="/logo.png" alt="Luxora Logo" />
+        <span>LUXORA</span>
+      </Link>
 
-      <div className="nav-links">
-        <Link to="/">{t("home")}</Link>
-        <Link to="/shop">{t("shop")}</Link>
-        <Link to="/supermarket">{t("supermarket")}</Link>
-        <Link to="/services">{t("services")}</Link>
-        <Link to="/wishlist">{t("wishlist")}</Link>
-        <Link to="/contact">{t("contact")}</Link>
+      <div className="premium-nav-links">
+        <Link to="/">Home</Link>
+
+        <div className="mega-item">
+          <Link to="/shop">Shop</Link>
+          <div className="mega-menu">
+            <Link to="/shop">All Products</Link>
+            <Link to="/shop">Perfumes</Link>
+            <Link to="/shop">Watches</Link>
+            <Link to="/shop">Skincare</Link>
+          </div>
+        </div>
+
+        <div className="mega-item">
+          <Link to="/supermarket">Supermarket</Link>
+          <div className="mega-menu">
+            <Link to="/supermarket">Fruits</Link>
+            <Link to="/supermarket">Drinks</Link>
+            <Link to="/supermarket">Snacks</Link>
+            <Link to="/supermarket">Dairy</Link>
+          </div>
+        </div>
+
+        <div className="mega-item">
+          <Link to="/services">Services</Link>
+          <div className="mega-menu">
+            <Link to="/services">Websites</Link>
+            <Link to="/services">E-Commerce</Link>
+            <Link to="/services">Business Pages</Link>
+          </div>
+        </div>
+
+        <Link to="/wishlist">Wishlist</Link>
+        <Link to="/contact">Contact</Link>
 
         {user?.role === "admin" && (
           <Link
@@ -60,7 +88,7 @@ function Navbar({
             className="admin-alert-link"
             onClick={() => setNewOrdersCount(0)}
           >
-            {t("admin")}
+            Admin
             {newOrdersCount > 0 && (
               <span className="admin-badge">{newOrdersCount}</span>
             )}
@@ -68,33 +96,33 @@ function Navbar({
         )}
       </div>
 
-      <div className="nav-actions">
-        <button type="button" onClick={changeLanguage} className="small-btn">
+      <div className="premium-nav-actions">
+        <button type="button" onClick={changeLanguage} className="premium-lang">
           {i18n.language === "en" ? "AR" : "EN"}
         </button>
 
-        <Link to="/wishlist" className="icon-link">
+        <Link to="/wishlist" className="premium-icon">
           <Heart size={20} />
           <span>{wishlist.length}</span>
         </Link>
 
-        <Link to="/cart" className="icon-link">
+        <Link to="/cart" className="premium-icon">
           <ShoppingBag size={20} />
-          <span>{cart.reduce((sum, item) => sum + item.qty, 0)}</span>
+          <span>{cartCount}</span>
         </Link>
 
         {user ? (
           <>
-            <Link to="/profile" className="icon-link">
+            <Link to="/profile" className="premium-icon">
               <User size={20} />
             </Link>
 
-            <button onClick={logout} className="small-btn">
-              <LogOut size={16} /> {t("logout")}
+            <button onClick={logout} className="premium-login">
+              <LogOut size={16} /> Logout
             </button>
           </>
         ) : (
-          <Link to="/login" className="small-btn">{t("login")}</Link>
+          <Link to="/login" className="premium-login">Login</Link>
         )}
       </div>
     </motion.nav>
