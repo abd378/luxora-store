@@ -2049,7 +2049,14 @@ try {
           },
         }}
       />
-
+<a
+  href="https://wa.me/96181345379"
+  target="_blank"
+  rel="noreferrer"
+  className="whatsapp-float"
+>
+  💬
+</a>
       <Navbar
         user={user}
         cart={cart}
