@@ -1726,3 +1726,37 @@ button {
   color: #d4af37;
   font-weight: bold;
 }
+.tracking-box {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.tracking-title {
+  font-weight: 900;
+  color: #d4af37;
+  margin-bottom: 12px;
+}
+
+.tracking-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.tracking-step {
+  padding: 10px;
+  border-radius: 12px;
+  background: #191919;
+  color: #777;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.tracking-step.active {
+  background: #d4af37;
+  color: #111;
+}

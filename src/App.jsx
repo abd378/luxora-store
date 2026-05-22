@@ -1034,6 +1034,25 @@ function Profile({ user, orders, submitFeedback }) {
               <p>Location: {order.location || "Not provided"}</p>
               <p>Payment: {order.payment_method || "Cash on Delivery"}</p>
               <p>Payment Status: {order.payment_status || "Pending"}</p>
+              <p>Tracking: {order.tracking_status || "Pending"}</p>
+
+              <div className="tracking-box">
+                {["Pending", "Processing", "Out for Delivery", "Delivered"].map(
+                  (step) => (
+                    <span
+                      key={step}
+                      className={
+                        step === (order.tracking_status || "Pending")
+                          ? "tracking-step active"
+                          : "tracking-step"
+                      }
+                    >
+                      {step}
+                    </span>
+                  )
+                )}
+              </div>
+
               <p>Date: {new Date(order.created_at).toLocaleString()}</p>
 
               <form
@@ -1066,7 +1085,7 @@ function Profile({ user, orders, submitFeedback }) {
   );
 }
 
-function Admin({ adminOrders, feedbacks, updateOrderStatus }) {
+function Admin({ adminOrders, feedbacks, updateOrderStatus, updateTrackingStatus }) {
   const totalRevenue = adminOrders.reduce(
     (sum, order) => sum + Number(order.total),
     0
@@ -1126,6 +1145,7 @@ function Admin({ adminOrders, feedbacks, updateOrderStatus }) {
             <span>Payment</span>
             <span>Total</span>
             <span>Status</span>
+            <span>Tracking</span>
             <span>Action</span>
           </div>
 
@@ -1151,6 +1171,18 @@ function Admin({ adminOrders, feedbacks, updateOrderStatus }) {
               >
                 {order.status}
               </span>
+
+              <select
+                className="tracking-select"
+                value={order.tracking_status || "Pending"}
+                onChange={(e) => updateTrackingStatus(order.id, e.target.value)}
+              >
+                <option>Pending</option>
+                <option>Processing</option>
+                <option>Out for Delivery</option>
+                <option>Delivered</option>
+                <option>Cancelled</option>
+              </select>
 
               <button
                 className="status-btn"
@@ -1201,6 +1233,7 @@ function ProtectedAdmin({
   adminOrders,
   feedbacks,
   updateOrderStatus,
+  updateTrackingStatus,
 }) {
   if (user?.role === "admin") {
     return (
@@ -1208,6 +1241,7 @@ function ProtectedAdmin({
         adminOrders={adminOrders}
         feedbacks={feedbacks}
         updateOrderStatus={updateOrderStatus}
+        updateTrackingStatus={updateTrackingStatus}
       />
     );
   }
@@ -1229,8 +1263,8 @@ function App() {
   const [sessionUser, setSessionUser] = useState(null);
   const [user, setUser] = useState(null);
   useEffect(() => {
-  initOneSignal();
-}, []);
+    initOneSignal();
+  }, []);
 
   const [products, setProducts] = useState(() =>
     JSON.parse(localStorage.getItem("luxoraProducts") || "[]")
@@ -1631,6 +1665,7 @@ function App() {
         customer_email: user.email || currentUser.email,
         total,
         status: "Processing",
+        tracking_status: "Pending",
         items: cart,
         phone,
         location,
@@ -1677,45 +1712,21 @@ function App() {
       await loadAdminData();
     }
 try {
-  await supabase.functions.invoke("send-push-notification", {
-    body: {
-      title: "New Luxora Order 🛒",
-      message: `New order from ${user.full_name || currentUser.email} - Total: $${total}`,
-    },
-  });
-} catch (pushError) {
-  console.log("Push notification error:", pushError);
-}
-try {
-  await supabase.functions.invoke("send-push-notification", {
-    body: {
-      title: "New Luxora Order 🛒",
-      message: `New order from ${user.full_name || currentUser.email} - Total: $${total}`,
-    },
-  });
+      const telegramResult = await supabase.functions.invoke("send-telegram-order", {
+        body: {
+          customer: user.full_name || currentUser.email,
+          total,
+          phone,
+          location,
+          paymentMethod,
+          transactionId: paymentReference || "N/A",
+        },
+      });
 
-  console.log("Push notification sent");
-} catch (pushError) {
-  console.log("Push notification error:", pushError);
-}
-console.log("BEFORE TELEGRAM SEND");
-
-try {
-  const telegramResult = await supabase.functions.invoke("send-telegram-order", {
-    body: {
-      customer: user.full_name || currentUser.email,
-      total: total,
-      phone: phone,
-      location: location,
-      paymentMethod: paymentMethod,
-      transactionId: paymentReference || "N/A",
-    },
-  });
-
-  console.log("TELEGRAM RESULT:", telegramResult);
-} catch (telegramError) {
-  console.log("TELEGRAM ERROR:", telegramError);
-}
+      console.log("TELEGRAM RESULT:", telegramResult);
+    } catch (telegramError) {
+      console.log("TELEGRAM ERROR:", telegramError);
+    }
     toast.success("Order confirmed successfully!");
     navigate("/profile");
   }
@@ -1762,6 +1773,26 @@ try {
     }
 
     toast.success("Order marked as completed!");
+  }
+
+  async function updateTrackingStatus(orderId, trackingStatus) {
+    const { error } = await supabase
+      .from("orders")
+      .update({ tracking_status: trackingStatus })
+      .eq("id", orderId);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    await loadAdminData();
+
+    if (sessionUser) {
+      await loadOrders(sessionUser.id);
+    }
+
+    toast.success(`Tracking updated to ${trackingStatus}`);
   }
 
   return (
@@ -1888,6 +1919,7 @@ try {
               adminOrders={adminOrders}
               feedbacks={feedbacks}
               updateOrderStatus={updateOrderStatus}
+              updateTrackingStatus={updateTrackingStatus}
             />
           }
         />
