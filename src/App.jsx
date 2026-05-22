@@ -1184,13 +1184,17 @@ function Admin({ adminOrders, feedbacks, updateOrderStatus, updateTrackingStatus
                 <option>Cancelled</option>
               </select>
 
-              <button
-                className="status-btn"
-                onClick={() => updateOrderStatus(order.id)}
-                disabled={order.status === "Completed"}
-              >
-                {order.status === "Completed" ? "Done" : "Mark Completed"}
-              </button>
+              <select
+  value={order.tracking_status || "Pending"}
+  onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+  className="status-select"
+>
+  <option>Pending</option>
+  <option>Processing</option>
+  <option>Out for Delivery</option>
+  <option>Delivered</option>
+  <option>Cancelled</option>
+</select>
             </div>
           ))}
         </div>
@@ -1755,26 +1759,12 @@ try {
     e.target.reset();
   }
 
-  async function updateOrderStatus(orderId) {
-  const order = adminOrders.find((o) => o.id === orderId);
-
-  if (!order) return;
-
-  let nextStatus = "Processing";
-
-  if (order.tracking_status === "Processing") {
-    nextStatus = "Out for Delivery";
-  }
-
-  if (order.tracking_status === "Out for Delivery") {
-    nextStatus = "Delivered";
-  }
-
+  async function updateOrderStatus(orderId, newStatus) {
   const { error } = await supabase
     .from("orders")
     .update({
-      tracking_status: nextStatus,
-      status: nextStatus === "Delivered" ? "Completed" : "Processing",
+      tracking_status: newStatus,
+      status: newStatus === "Delivered" ? "Completed" : "Processing",
     })
     .eq("id", orderId);
 
@@ -1790,7 +1780,7 @@ try {
     await loadOrders(sessionUser.id);
   }
 
-  toast.success(`Tracking updated to ${nextStatus}`);
+  toast.success(`Tracking updated to ${newStatus}`);
 }
   async function updateTrackingStatus(orderId, trackingStatus) {
     const { error } = await supabase

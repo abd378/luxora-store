@@ -1760,3 +1760,17 @@ button {
   background: #d4af37;
   color: #111;
 }
+.status-select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d4af37;
+  background: #111;
+  color: #d4af37;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.status-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
