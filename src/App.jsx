@@ -1756,25 +1756,49 @@ try {
   }
 
   async function updateOrderStatus(orderId) {
-    const { error } = await supabase
-      .from("orders")
-      .update({ status: "Completed" })
-      .eq("id", orderId);
+  const order = adminOrders.find((o) => o.id === orderId);
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+  if (!order) return;
 
-    await loadAdminData();
+  let nextStatus = "Pending";
 
-    if (sessionUser) {
-      await loadOrders(sessionUser.id);
-    }
+  switch (order.tracking_status) {
+    case "Pending":
+      nextStatus = "Processing";
+      break;
 
-    toast.success("Order marked as completed!");
+    case "Processing":
+      nextStatus = "Out for Delivery";
+      break;
+
+    case "Out for Delivery":
+      nextStatus = "Delivered";
+      break;
+
+    default:
+      nextStatus = "Delivered";
   }
 
+  const { error } = await supabase
+    .from("orders")
+    .update({
+      tracking_status: nextStatus,
+    })
+    .eq("id", orderId);
+
+  if (error) {
+    toast.error(error.message);
+    return;
+  }
+
+  await loadAdminData();
+
+  if (sessionUser) {
+    await loadOrders(sessionUser.id);
+  }
+
+  toast.success(`Tracking updated to ${nextStatus}`);
+}
   async function updateTrackingStatus(orderId, trackingStatus) {
     const { error } = await supabase
       .from("orders")
