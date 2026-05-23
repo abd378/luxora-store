@@ -2207,3 +2207,50 @@ img {
   }
 
 }
+/* ===== LOADING SKELETON ===== */
+
+.skeleton-card {
+  padding: 18px;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+.skeleton-img,
+.skeleton-line,
+.skeleton-price {
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eaf4ff, #dbeafe, #eaf4ff);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.4s infinite;
+}
+
+.skeleton-img {
+  height: 180px;
+  margin-bottom: 16px;
+}
+
+.skeleton-line {
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+.skeleton-price {
+  width: 90px;
+  height: 24px;
+  margin-top: 16px;
+}
+
+@keyframes skeletonLoading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

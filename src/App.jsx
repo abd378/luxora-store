@@ -406,8 +406,18 @@ function Shop({ products, addToCart, toggleWishlist, wishlist }) {
           <option>Accessories</option>
         </select>
       </div>
-
-      {filteredProducts.length === 0 ? (
+{products.length === 0 ? (
+  <div className="product-grid">
+    {[1, 2, 3, 4, 5, 6].map((item) => (
+      <div className="skeleton-card" key={item}>
+        <div className="skeleton-img"></div>
+        <div className="skeleton-line"></div>
+        <div className="skeleton-line short"></div>
+        <div className="skeleton-price"></div>
+      </div>
+    ))}
+  </div>
+) : filteredProducts.length === 0 ? (
         <h2 className="empty">No products found.</h2>
       ) : (
         <div className="product-grid">
