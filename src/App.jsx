@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Eye,
 } from "lucide-react";
+import SplashScreen from "./SplashScreen";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { initOneSignal } from "./OneSignalInit";
@@ -1620,9 +1621,14 @@ function ProtectedAdmin({
 function App() {
   const [sessionUser, setSessionUser] = useState(null);
   const [user, setUser] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
-    initOneSignal();
-  }, []);
+  const timer = setTimeout(() => {
+    setShowSplash(false);
+  }, 2500);
+
+  return () => clearTimeout(timer);
+}, []);
 
   const [products, setProducts] = useState(() =>
     JSON.parse(localStorage.getItem("luxoraProducts") || "[]")
@@ -2140,6 +2146,7 @@ try {
 
   return (
     <div className="site">
+      {showSplash && <SplashScreen />}
       <Toaster
         position="top-right"
         toastOptions={{
